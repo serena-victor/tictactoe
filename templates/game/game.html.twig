@@ -1,0 +1,47 @@
+{{ encore_entry_link_tags('app') }}
+
+{{ form_start(form) }}
+
+<table>
+    <tr>
+        <td> {{ form_widget(form.0) }} </td>
+        <td> {{ form_widget(form.1) }} </td>
+        <td> {{ form_widget(form.2) }} </td>
+    </tr>
+    <tr>
+        <td> {{ form_widget(form.3) }} </td>
+        <td> {{ form_widget(form.4) }} </td>
+        <td> {{ form_widget(form.5) }} </td>
+    </tr>
+    <tr>
+        <td> {{ form_widget(form.6) }} </td>
+        <td> {{ form_widget(form.7) }} </td>
+        <td> {{ form_widget(form.8) }} </td>
+    </tr>
+</table>
+
+{{ form_end(form) }}
+
+<script>
+    let buttons = document.getElementsByTagName("button");
+    let array = []
+    {% for val in array %}
+    array.push('{{ val }}');
+    {% endfor %}
+
+    for (let i = 0; i < 8; i++) {
+        if (array[i] != "") {
+            document.getElementById('game_' + i).className = array[i];
+        }
+    }
+
+    for (let button of buttons) {
+            if (button.classList.contains('X') || button.classList.contains('O')){
+                console.log(button);
+               // button.disabled = true;
+        }
+    }
+
+
+</script>
+
