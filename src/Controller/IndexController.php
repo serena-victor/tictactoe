@@ -53,35 +53,44 @@ class IndexController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository(Game::class);
         $game = $repo->getByUrl($url);
-        $array=[];
 
         $form = $this->createForm(GameType::class);
         $form->handleRequest($request);
 
+        $player = '';
+        if ($game->getStatus()) {
+            $player = 'X';
+        } else {
+            $player = 'O';
+        }
+        $array = $game->getFields();
+        $win = 0;
+        $winner=null;
+
+
+
+
         if ($form->isSubmitted()) {
-            $player = '';
-            if ($game->getStatus()) {
-                $player = 'X';
-            } else {
-                $player = 'O';
-            }
-            $array = $game->getFields();
 
             $clickedButton = intval($form->getClickedButton()->getConfig()->getName());
             $array[$clickedButton] = $player;
             $game->setStatus(!$game->getStatus());
             $game->setFields($array);
             $em->flush();
-
-            if ($this->checkVictory($array)) {
-                dump("win");
-            }
         }
+
+        if ($this->checkVictory($array)) {
+            $win = true;
+            $winner=(!$game->getStatus())?'RED':'BLUE';
+        }
+
 
         return $this->render('game/game.html.twig', [
             'form' => $form->createView(),
             'player' => $game->getStatus(),
             'array' => $array,
+            'win' => $win,
+            'winner' => $winner
         ]);
     }
 
@@ -89,15 +98,15 @@ class IndexController extends AbstractController
     private function checkVictory($a)
     {
         return
-            (($a[0] === $a[1]) && ($a[0] === $a[2])) ? true:                                                   //row1
-                (($a[3] === $a[4]) && ($a[3] === $a[5])) ? true:                                               //row2
-                    (($a[6] === $a[7]) && ($a[6] === $a[8])) ? true:                                           //row3
+            (($a[0] === $a[1]) && ($a[0] === $a[2])) ? true :                                                   //row1
+                (($a[3] === $a[4]) && ($a[3] === $a[5])) ? true :                                               //row2
+                    (($a[6] === $a[7]) && ($a[6] === $a[8])) ? true :                                           //row3
 
-                        (($a[0] === $a[3]) && ($a[0] === $a[6])) ? true:                                       //col1
-                            (($a[1] === $a[4]) && ($a[1] === $a[7])) ? true:                                   //row2
-                                (($a[2] === $a[5]) && ($a[2] === $a[8])) ? true:                               //row3
+                        (($a[0] === $a[3]) && ($a[0] === $a[6])) ? true :                                       //col1
+                            (($a[1] === $a[4]) && ($a[1] === $a[7])) ? true :                                   //row2
+                                (($a[2] === $a[5]) && ($a[2] === $a[8])) ? true :                               //row3
 
-                                    (($a[0] === $a[4]) && ($a[0] === $a[8])) ? true:                           //diag1
-                                        (($a[2] === $a[4]) && ($a[2] === $a[6])) ? true: false;                //diag2
+                                    (($a[0] === $a[4]) && ($a[0] === $a[8])) ? true :                           //diag1
+                                        (($a[2] === $a[4]) && ($a[2] === $a[6])) ? true : false;                //diag2
     }
 }

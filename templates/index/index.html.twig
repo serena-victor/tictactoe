@@ -1,7 +1,27 @@
-test
+{% extends 'base.html.twig' %}
+{% block title %}index{% endblock %}
+
+{% block body %}
+    <div class="text-white text-center text-justify mb-3">
+        <h1>Tic tac toe rules</h1>
+        <p>The rules are simple, you play on a 3x3 grid and the goal is to align 3 crosses or circle depending on your team<br>
+        The game is turn-based and the red (cross) player starts<br>
+        Here is an example where the red player win with 3 aligned crossed on the left</p>
+        <img src="{{ asset('files/example.jpg') }}" alt="">
+    </div>
 
 {{ form_start(form) }}
 
     {{ form_widget(form) }}
 
 {{ form_end(form) }}
+
+{% endblock %}
+
+
+{% block js %}
+
+<script>
+    document.getElementById('newgame_new').className += 'btn btn-success col-6 d-block m-auto';
+</script>
+{% endblock %}

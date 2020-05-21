@@ -1,47 +1,73 @@
-{{ encore_entry_link_tags('app') }}
+{% extends 'base.html.twig' %}
+{% block title %}TicTacToe{% endblock %}
 
-{{ form_start(form) }}
+{% block body %}
 
-<table>
-    <tr>
-        <td> {{ form_widget(form.0) }} </td>
-        <td> {{ form_widget(form.1) }} </td>
-        <td> {{ form_widget(form.2) }} </td>
-    </tr>
-    <tr>
-        <td> {{ form_widget(form.3) }} </td>
-        <td> {{ form_widget(form.4) }} </td>
-        <td> {{ form_widget(form.5) }} </td>
-    </tr>
-    <tr>
-        <td> {{ form_widget(form.6) }} </td>
-        <td> {{ form_widget(form.7) }} </td>
-        <td> {{ form_widget(form.8) }} </td>
-    </tr>
-</table>
 
-{{ form_end(form) }}
+    <h1 class="col mb-5 text-center  text-white">
+        {% if win %}
+            The player {{ winner }} has won
+        {% else %}
+            The player
+            {% if player %}
+                RED
+            {% else %}
+                BLUE
+            {% endif %}
+            has the hand
+        {% endif %}
+    </h1>
+    {{ form_start(form) }}
 
-<script>
-    let buttons = document.getElementsByTagName("button");
-    let array = []
-    {% for val in array %}
-    array.push('{{ val }}');
-    {% endfor %}
+    <table class="m-auto border-white border">
+        <tr>
+            <td> {{ form_row(form.0, {'attr':{'class':'m-1 bg-dark border-0 '}}) }} </td>
+            <td class="border-white border"> {{ form_row(form.1, {'attr':{'class':'m-1 bg-dark border-0 '}}) }} </td>
+            <td> {{ form_row(form.2, {'attr':{'class':'m-1 bg-dark border-0 '}}) }} </td>
+        </tr>
+        <tr class="border-white border">
+            <td> {{ form_row(form.3, {'attr':{'class':'m-1 bg-dark border-0 '}}) }} </td>
+            <td class="border-white border"> {{ form_row(form.4, {'attr':{'class':'m-1 bg-dark border-0 '}}) }} </td>
+            <td> {{ form_row(form.5, {'attr':{'class':'m-1 bg-dark border-0 '}}) }} </td>
+        </tr>
+        <tr>
+            <td> {{ form_row(form.6, {'attr':{'class':'m-1 bg-dark border-0 '}}) }} </td>
+            <td class="border-white border"> {{ form_row(form.7, {'attr':{'class':'m-1 bg-dark border-0 '}}) }} </td>
+            <td> {{ form_row(form.8, {'attr':{'class':'m-1 bg-dark border-0 '}}) }} </td>
+        </tr>
+    </table>
 
-    for (let i = 0; i < 8; i++) {
-        if (array[i] != "") {
-            document.getElementById('game_' + i).className = array[i];
+    {{ form_end(form) }}
+
+    <h3 class="text-center mt-5">
+        <a class="text-white" href="/">Go back</a>
+    </h3>
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        let buttons = document.getElementsByTagName("button");
+        let array = []
+        {% for val in array %}
+        array.push('{{ val }}');
+        {% endfor %}
+
+        for (let i = 0; i < 9; i++) {
+            if (array[i] != "") {
+                document.getElementById('game_' + i).className += array[i];
+            }
         }
-    }
 
-    for (let button of buttons) {
-            if (button.classList.contains('X') || button.classList.contains('O')){
-                console.log(button);
-               // button.disabled = true;
+        for (let button of buttons) {
+            if (button.classList.contains('X') || button.classList.contains('O')) {
+                button.disabled = true;
+            }
         }
-    }
 
-
-</script>
-
+        if (({{ win }})) {
+            for (let button of buttons)
+                button.disabled = true;
+        }
+    </script>
+{% endblock %}

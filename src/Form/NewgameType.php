@@ -13,7 +13,7 @@ class NewgameType extends AbstractType
     {
         $builder
             ->add('new', SubmitType::class,[
-                'label'=>'Lancer une nouvelle partie'
+                'label'=>'Start a new game'
             ] )
         ;
     }

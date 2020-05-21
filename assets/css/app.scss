@@ -1,6 +1,13 @@
-button {
-  width: 9rem;
-  height: 9rem;
+@import "~bootstrap/scss/bootstrap";
+
+body{
+  margin-top:1rem ;
+}
+
+
+td button {
+  width: 200px;
+  height: 200px;
   background-repeat: no-repeat;
 
 }
